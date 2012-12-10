@@ -14,19 +14,23 @@ var handleSubmit = function(event) {
 	var form = event.srcElement;
 	var password = form["password"];
 	var username = form["username"];
-	console.log("password "+password.value+" username "+username.value+ " domain "+domain);
-	alert("password "+password.value+" username "+username.value+ " domain "+domain);
+	var num = form["num"];
+	var sym = form["sym"];
+	var upper = form["upper"];
+	var lower = form["lower"];
+	console.log("password "+password.value+" username "+username.value+ " domain "+domain + " num " + num.checked + " sym " + sym.checked + " upper " + upper.checked + " lower " + lower.checked);
+	alert("password "+password.value+" username "+username.value+ " domain "+domain + " num " + num.checked + " sym " + sym.checked + " upper " + upper.checked + " lower " + lower.checked);
 	return false;
 }
 
 
-  var genPass = generatePass(password.value, domain, username.value);
+//   var genPass = generatePass(password.value, domain, username.value);
 
-  alert("p: " + genPass + " m: " + password.value + " d: " +  domain + " v: " +  username.value);
-	// alert("password "+password+" username "+username);
-	// console.log(form.elements);
-	return false;
-}
+//   alert("p: " + genPass + " m: " + password.value + " d: " +  domain + " v: " +  username.value);
+// 	// alert("password "+password+" username "+username);
+// 	// console.log(form.elements);
+// 	return false;
+// }
 
 var generatePass = function(masspass, domain, username) {
   var callback = function(newhash) {

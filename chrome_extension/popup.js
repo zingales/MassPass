@@ -1,6 +1,8 @@
 var current_url;
 chrome.tabs.getSelected(null, function(tab) { //<-- "tab" has all the information
-    current_url = tab.url;       //<-- return the url
+    // current_url = tab.url;       //<-- return the urla
+    var urlParts = tab.url.replace('http://','').replace('https://','').split(/[/?#]/);
+	var domain = urlParts[0];
 	console.log(tab);
 	main();
 });

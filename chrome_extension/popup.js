@@ -1,4 +1,10 @@
-<<<<<<< HEAD
+$(document).ready(function(){
+    $('a#copy-static').zclip({
+        path:'js/ZeroClipboard.swf',
+        copy:$('p#static').text()
+    });
+});
+
 var domain;
 chrome.tabs.getSelected(null, function(tab) { //<-- "tab" has all the information
 	domain =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","");
@@ -20,7 +26,7 @@ var handleSubmit = function(event) {
 	var upper = form["upper"];
 	var lower = form["lower"];
 	console.log("password "+password.value+" username "+username.value+ " domain "+domain + " num " + num.checked + " sym " + sym.checked + " upper " + upper.checked + " lower " + lower.checked);
-	alert("password "+password.value+" username "+username.value+ " domain "+domain + " num " + num.checked + " sym " + sym.checked + " upper " + upper.checked + " lower " + lower.checked);
+	//alert("password "+password.value+" username "+username.value+ " domain "+domain + " num " + num.checked + " sym " + sym.checked + " upper " + upper.checked + " lower " + lower.checked);
 	var genPass = generatePass(password.value, domain, username.value);
 	return false;
 }

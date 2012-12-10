@@ -17,8 +17,11 @@ def getMod(base, exp, mod):
 def convert(num, base, mod):
   newBase = ''
   while len(num) > 0:
+    print len(num)
     (num, dig) = divide(num, base, mod)
+    print (num, dig)
     newBase = mod[dig] + newBase
+    raw_input("whoo")
   return newBase
 
 def divide(num, base, mod):
@@ -37,9 +40,15 @@ def divide(num, base, mod):
 
 dec = '0123456789'
 hex = '0123456789abcdef'
-b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./'
 fbPass = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_'
 
+hash = 'aAY2m8yxpEUA11b1D9bLxQ5kgUJSG3K';
+
+print "hello"
+print divide(hash, b64, hex)
+print "moto"
+print convert(hash, b64, hex)
 print convert("2256", dec, b64)
 print convert("aaf1", hex, b64)
 print convert("aa23985729f823ffc3222f1", hex, fbPass)

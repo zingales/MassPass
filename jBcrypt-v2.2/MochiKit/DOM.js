@@ -148,7 +148,18 @@ MochiKit.DOM.getViewportDimensions = new Function('' +
     'if (!MochiKit["Style"]) {' +
     '    throw new Error("This function has been deprecated and depends on MochiKit.Style.");' +
     '}' +
+<<<<<<< HEAD:jBcrypt-v2.2/MochiKit/DOM.js
     'return MochiKit.Style.getViewportDimensions.apply(this, arguments);');
+=======
+    'return MochiKit.Style.getViewportDimensions.apply(this, arguments);');*/
+
+MochiKit.DOM.getViewportDimensions = function () {
+    if (!MochiKit["Style"]) {
+        throw new Error("This function has been deprecated and depends on MochiKit.Style.");
+    }
+    return MochiKit.Style.getViewportDimensions.apply(this, arguments);
+};
+>>>>>>> Got bcrypt working with js plugin:chrome_extension/MochiKit/DOM.js~
 
 MochiKit.Base.update(MochiKit.DOM, {
 

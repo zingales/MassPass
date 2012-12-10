@@ -1,3 +1,6 @@
 body {
         min-width:280px;
       }
+#display_url {
+	display: inline;
+}

@@ -148,8 +148,8 @@ MochiKit.DOM.DEPRECATED = [
     'if (!MochiKit["Style"]) {' +
     '    throw new Error("This function has been deprecated and depends on MochiKit.Style.");' +
     '}' +
-    'return MochiKit.Style.getViewportDimensions.apply(this, arguments);');
-*/
+    'return MochiKit.Style.getViewportDimensions.apply(this, arguments);');*/
+
 MochiKit.DOM.getViewportDimensions = function () {
     if (!MochiKit["Style"]) {
         throw new Error("This function has been deprecated and depends on MochiKit.Style.");

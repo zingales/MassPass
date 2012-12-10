@@ -16,10 +16,7 @@ var handleSubmit = function(event) {
 	var password = form["password"];
 	var username = form["username"];
 	console.log("password "+password.value+" username "+username.value+ " domain "+domain);
-	alert("password "+password.value+" username "+username.value+ " domain "+domain);
-	return false;
-}
-
+	//alert("password "+password.value+" username "+username.value+ " domain "+domain);
 
   var genPass = generatePass(password.value, domain, username.value);
 

@@ -37,9 +37,10 @@ var generatePass = function(masspass, domain, username) {
   var callback = function(newHash) {
     var hashPart = newHash.substr(29);
     var hashHex = convert(hashPart, b64, hex);
-    var out = newHash + "\n" + hashPart + "\n" + hashPart.length + "\n" + hashHex;
+    var hashFB = convert(hashPart, b64, fbPass);
+    var out = newHash + "\n" + hashPart + "\n" + hashPart.length + "\n" + hashHex + "\n" + hashFB;
     console.log(out);
-    alert(newHash + "\n" + hashPart + "\n" + hashPart.length + "\n" + hashHex);
+    alert(out);
   }
 
   bc = new bCrypt();

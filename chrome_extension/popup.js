@@ -7,6 +7,7 @@ $(document).ready(function(){
 
 var domain;
 chrome.tabs.getSelected(null, function(tab) { //<-- "tab" has all the information
+  // TODO add a better domain getter.
 	domain =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","");
 	main();
 });
@@ -15,6 +16,7 @@ var main = function () {
 	document.forms["masspass_form"]["onsubmit"] = handleSubmit;
 	var display_url = document.getElementById("display_url");
 	display_url.innerHTML = domain;
+  loadRequirements(domain);
 }
 
 var handleSubmit = function(event) {
@@ -28,8 +30,35 @@ var handleSubmit = function(event) {
 	console.log("password "+password.value+" username "+username.value+ " domain "+domain + " num " + num.checked + " sym " + sym.checked + " upper " + upper.checked + " lower " + lower.checked);
 	//alert("password "+password.value+" username "+username.value+ " domain "+domain + " num " + num.checked + " sym " + sym.checked + " upper " + upper.checked + " lower " + lower.checked);
 	var genPass = generatePass(password.value, domain, username.value);
+  storeRequirements(domain);
 	return false;
 }
+
+var loadRequirements = function(domainstr) {
+  // array of password requirements for that domain
+  //                   num, upper, lower, symol, min, max
+  var vals = JSON.parse(localStorage.getItem(domainstr));
+  if (vals === null || vals === undefined){
+    console.log("no stored password requirements");
+    vals = new Array(true, true, false, true, 6  , 20);
+  }
+  document.getElementsByName('num')[0].checked = vals[0];
+  document.getElementsByName('upper')[0].checked = vals[1];
+  document.getElementsByName('lower')[0].checked = vals[2];
+  document.getElementsByName('sym')[0].checked = vals[3];
+  // document.getElementsByName('min')[0] = vals[4];
+  // document.getElementsByName('max')[0] = vals[5];
+}
+
+var storeRequirements = function(domain) {
+  var vals = new Array();
+  vals[0] = document.getElementsByName('num')[0].checked;
+  vals[1] = document.getElementsByName('upper')[0].checked;
+  vals[2] = document.getElementsByName('lower')[0].checked;
+  vals[3] = document.getElementsByName('sym')[0].checked;
+  localStorage.setItem(domain, JSON.stringify(vals));
+}
+
 
 var generatePass = function(masspass, domain, username) {
   var dec = '0123456789';
@@ -85,31 +114,3 @@ var divide = function(num, base, mod) {
   return [quotient, rem];
 }
 
-/*
-var convert = function(num, base, mod) {
-  newBase = ''
-  while len(num) > 0:
-    (num, dig) = divide(num, base, mod)
-    newBase = mod[dig] + newBase
-  return newBase
-}
-
-var divide = function(num, base, mod) {
-  rem = 0
-  quotient = ''
-  for i in xrange(len(num)):
-    c = base.index(num[i])
-    rem = rem*len(base) + c
-    dig = rem / len(mod)
-    rem = rem % len(mod) 
-    quotient += base[dig]
-
-  while len(quotient) > 0 and quotient[0] == '0':
-    quotient = quotient[1:]
-  return (quotient, rem)
-}
-dec = '0123456789'
-hex = '0123456789abcdef'
-b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-fbPass = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_'
-*/

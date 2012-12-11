@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Getting Started Extension's Popup</title>
+    <title>MassPass Popup</title>
 	<link rel="stylesheet" type="text/css" href="popup.css" />
     <!-- JavaScript and HTML must be in separate files for security. -->
     <script src="MochiKit/MochiKit.js" type="text/javascript"></script>
@@ -20,25 +20,46 @@
     <script src="popup.js"></script>
   </head>
   <body>
-    <div>
+  <!--   <div>
       <a href="#" id="copy-static">copy</a>
       <span id="static">asdfasdf</span>
-    </div>
+    </div> -->
 	Domain: <div id="display_url"></div>
 	<form name="masspass_form" action="">
 		MassPass: <input type="password" name="password" />
 		<br>
 		Username: <input type="text" name="username" />
 		<br>
-		<details>
+		<details >
 			<summary>Additional Password Requirments</summary>
-			<div >
-				<br>
-			<input type="checkbox" name="num" value="num"> Numbers <br>
-			<input type="checkbox" name="upper" value="upper" > Uppercase <br> 
-			<input type="checkbox" name="lower" value="lower"> Lowercase<br>
-			<input type="checkbox" name="sym" value="sym"> Symbols <br>
-			</div>
+				<table>
+					<tr>
+						<td>
+							<input type="checkbox" name="num" /> 
+							<input type="number" name="num_num" min="0" />
+							Numbers
+						</td>
+					</tr>
+						<td>
+							<input type="checkbox" name="upper" /> 
+							<input type="number" name="upper_num" min="0" />
+							Uppercase 
+						</td>
+					<tr>
+						<td>
+						<input type="checkbox" name="lower" > 
+						<input type="number" name="lower_num" min="0" >
+						Lowercase
+						</td>	
+					</tr>
+					<tr>
+						<td>
+						<input type="checkbox" name="sym" />  
+						<input type="number" name="sym_num" min="0" />
+						Symbols
+						</td>
+					</tr>
+				</table>
 		</details>
 		<input type="submit" value="Generate" />
 	</form>

@@ -1,7 +1,7 @@
 $(document).ready(function(){
     $('a#copy-static').zclip({
         path:'js/ZeroClipboard.swf',
-        copy:$('p#static').text()
+        copy:"copied_this_text"
     });
 });
 
@@ -71,19 +71,34 @@ var storeRequirements = function(domain) {
 
 var generatePass = function(masspass, domain, username) {
   var dec = '0123456789';
+  var low = 'abcdefghijklmnopqrstuvwxyz';
+  var cap = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var symbol = '~!@#$%^&*()_'
   var hex = '0123456789abcdef';
-  var b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./';
-  var fbPass = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_';
+  var b64 = cap + low + dec + './'
+  var fbPass = cap + low + dec + symbol
+  var req = [[2, symbol], [2, dec], [2, low], [2, cap], [12, fbPass]];
 
   var concat = masspass + "" + domain + "" + username;
 	var salt = "$2a$12$b0MHMsT3ErLoTRjpjzsCie";
 
   var callback = function(newHash) {
     var hashPart = newHash.substr(29);
-    var hashHex = convert(hashPart, b64, hex);
-    var hashFB = convert(hashPart, b64, fbPass);
-    var out = newHash + "\n" + hashPart + "\n" + hashPart.length + "\n" + hashHex + "\n" + hashFB;
+    var hashHex = convert(hashPart, b64, hex)[0];
+    var hashFB = convert(hashPart, b64, fbPass)[0];
+
+    var comboHash = '';
+    var result = [0, hashPart];
+    for (var i = 0; i<req.length; i++) {
+      result = convert(result[1], b64, req[i][1], req[i][0]);
+      comboHash += result[0];
+    }
+
+    var shuffleHash = shuffle(hashPart, b64, comboHash);
+
+    var out = newHash + "\n" + hashPart + "\n" + hashPart.length + "\n" + hashHex + "\n" + hashFB + "\n" + comboHash + "\n" + shuffleHash;
     console.log(out);
+    //$("#pass").value(hashFB); 
     alert(out);
   }
 
@@ -91,16 +106,29 @@ var generatePass = function(masspass, domain, username) {
   bc.hashpw(concat, salt, callback, function() {});
 }
 
-var convert = function(num, base, mod) {
+var shuffle = function(hash, base, pass) {
+  var shuffled = '';
+  var result;
+  while(pass.length > 0) {
+    result = divide(hash, base, pass.length);
+    shuffled += pass.charAt(result[1]);
+    pass = pass.substring(0, result[1]) + pass.substr(result[1]+1);
+    hash = result[0];
+  }
+  return shuffled;
+}
+
+var convert = function(num, base, mod, len) {
+  if(typeof(len)==='undefined') len = 1000;
   var newBase = '';
   var result;
-  while (num.length > 0) {
-    result = divide(num, base, mod);
+  while (num.length > 0 && newBase.length < len) {
+    result = divide(num, base, mod.length);
     num = result[0];
     dig = result[1];
     newBase = mod.charAt(result[1]) + newBase;
   }
-  return newBase
+  return [newBase, num]
 }
 
 var divide = function(num, base, mod) {
@@ -113,8 +141,8 @@ var divide = function(num, base, mod) {
   for (var i = 0; i < num.length; i++) {
     c = base.indexOf(num.charAt(i));
     rem = rem*base.length + c;
-    dig = rem / mod.length;
-    rem = rem % mod.length; 
+    dig = rem / mod;
+    rem = rem % mod; 
     quotient += base.charAt(dig);
   }
 

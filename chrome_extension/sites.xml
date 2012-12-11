@@ -1,0 +1,20 @@
+<sites>
+	<site>
+		<domain>facebook.com</domain>
+		<minimum>6</minimum>
+		<maximum>-1</maximum>
+		<numbers>false</numbers>
+		<uppercase>false</uppercase>
+		<lowercase>false</lowercase>
+		<symbols>false</symbols>
+	</site>
+	<site>
+		<domain>gaybook.com</domain>
+		<minimum>8</minimum>
+		<maximum>16</maximum>
+		<numbers>true</numbers>
+		<uppercase>true</uppercase>
+		<lowercase>true</lowercase>
+		<symbols>true</symbols>
+	</site>
+</sites>

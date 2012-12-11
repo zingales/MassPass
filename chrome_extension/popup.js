@@ -14,9 +14,22 @@ chrome.tabs.getSelected(null, function(tab) { //<-- "tab" has all the informatio
 
 var main = function () {
 	document.forms["masspass_form"]["onsubmit"] = handleSubmit;
+	document.forms["test_form"]["onsubmit"] = parseXML;
 	var display_url = document.getElementById("display_url");
 	display_url.innerHTML = domain;
   loadRequirements(domain);
+}
+
+var parseXML = function () {
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("GET","sites.xml",false);
+	xmlhttp.send();
+	xml = xmlhttp.responseXML;
+	var site=xml.getElementsByTagName("site");
+	console.log(site);
+	for (i=0;i<site.length;i++) {
+		alert(site[i].getElementsByTagName("domain")[0].childNodes[0].nodeValue);
+	}
 }
 
 var handleSubmit = function(event) {

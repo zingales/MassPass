@@ -2,7 +2,8 @@
 Create Password Requirements
 Password requirements:
 1) minimum length
-2) uppercase letters
-3) lower case letters
-4) symbols
-5) numbers
+2) maximum length
+3) uppercase letters
+4) lower case letters
+5) symbols
+6) numbers

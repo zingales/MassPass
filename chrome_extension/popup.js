@@ -35,17 +35,21 @@ var handleSubmit = function(event) {
 }
 
 var loadRequirements = function(domainstr) {
-  // array of password requirements for that domain
-  //                   num, upper, lower, symol, min, max
   var vals = JSON.parse(localStorage.getItem(domainstr));
   if (vals === null || vals === undefined){
     console.log("no stored password requirements");
-    vals = new Array(true, true, false, true, 6  , 20);
+  //                 num, upper, lower, symol, nunNum, uppnum, lownum, symnum)
+    vals = new Array(true, true, false, true, 0      ,      0,   0   , 0, 20);
   }
   document.getElementsByName('num')[0].checked = vals[0];
   document.getElementsByName('upper')[0].checked = vals[1];
   document.getElementsByName('lower')[0].checked = vals[2];
   document.getElementsByName('sym')[0].checked = vals[3];
+  document.getElementsByName('num_num')[0].value = vals[4];
+  document.getElementsByName('upper_num')[0].value = vals[5];
+  document.getElementsByName('lower_num')[0].value = vals[6];
+  document.getElementsByName('sym_num')[0].value = vals[7];
+  document.getElementsByName('max_num')[0].value = vals[8];
   // document.getElementsByName('min')[0] = vals[4];
   // document.getElementsByName('max')[0] = vals[5];
 }
@@ -56,6 +60,11 @@ var storeRequirements = function(domain) {
   vals[1] = document.getElementsByName('upper')[0].checked;
   vals[2] = document.getElementsByName('lower')[0].checked;
   vals[3] = document.getElementsByName('sym')[0].checked;
+  vals[4] = document.getElementsByName('num_num')[0].value;
+  vals[5] = document.getElementsByName('upper_num')[0].value;
+  vals[6] = document.getElementsByName('lower_num')[0].value;
+  vals[7] = document.getElementsByName('sym_num')[0].value;
+  vals[8] = document.getElementsByName('max_num')[0].value;
   localStorage.setItem(domain, JSON.stringify(vals));
 }
 

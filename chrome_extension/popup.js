@@ -27,17 +27,15 @@ var handleSubmit = function(event) {
 	var sym = form["sym"];
 	var upper = form["upper"];
 	var lower = form["lower"];
-	console.log("password "+password.value+" username "+username.value+ " domain "+domain + " num " + num.checked + " sym " + sym.checked + " upper " + upper.checked + " lower " + lower.checked);
-	//alert("password "+password.value+" username "+username.value+ " domain "+domain + " num " + num.checked + " sym " + sym.checked + " upper " + upper.checked + " lower " + lower.checked);
-	var genPass = generatePass(password.value, domain, username.value);
-  storeRequirements(domain);
+
+  var vals = storeRequirements(domain);
+	var genPass = generatePass(password.value, domain, username.value, vals);
 	return false;
 }
 
 var loadRequirements = function(domainstr) {
   var vals = JSON.parse(localStorage.getItem(domainstr));
   if (vals === null || vals === undefined){
-    console.log("no stored password requirements");
   //                 num, upper, lower, symol, nunNum, uppnum, lownum, symnum)
     vals = new Array(true, true, false, true, 0      ,      0,   0   , 0, 20);
   }
@@ -50,8 +48,6 @@ var loadRequirements = function(domainstr) {
   document.getElementsByName('lower_num')[0].value = vals[6];
   document.getElementsByName('sym_num')[0].value = vals[7];
   document.getElementsByName('max_num')[0].value = vals[8];
-  // document.getElementsByName('min')[0] = vals[4];
-  // document.getElementsByName('max')[0] = vals[5];
 }
 
 var storeRequirements = function(domain) {
@@ -60,46 +56,59 @@ var storeRequirements = function(domain) {
   vals[1] = document.getElementsByName('upper')[0].checked;
   vals[2] = document.getElementsByName('lower')[0].checked;
   vals[3] = document.getElementsByName('sym')[0].checked;
-  vals[4] = document.getElementsByName('num_num')[0].value;
-  vals[5] = document.getElementsByName('upper_num')[0].value;
-  vals[6] = document.getElementsByName('lower_num')[0].value;
-  vals[7] = document.getElementsByName('sym_num')[0].value;
-  vals[8] = document.getElementsByName('max_num')[0].value;
+  vals[4] = parseInt(document.getElementsByName('num_num')[0].value);
+  vals[5] = parseInt(document.getElementsByName('upper_num')[0].value);
+  vals[6] = parseInt(document.getElementsByName('lower_num')[0].value);
+  vals[7] = parseInt(document.getElementsByName('sym_num')[0].value);
+  vals[8] = parseInt(document.getElementsByName('max_num')[0].value);
   localStorage.setItem(domain, JSON.stringify(vals));
+  return vals;
 }
 
+function copyToClipboard (text) {
+  window.prompt ("Copy to clipboard: Ctrl+C, Enter", text);
+}
 
-var generatePass = function(masspass, domain, username) {
-  var dec = '0123456789';
+var generatePass = function(masspass, domain, username, reqs) {
+  var num = '0123456789';
   var low = 'abcdefghijklmnopqrstuvwxyz';
   var cap = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  var symbol = '~!@#$%^&*()_'
-  var hex = '0123456789abcdef';
-  var b64 = cap + low + dec + './'
-  var fbPass = cap + low + dec + symbol
-  var req = [[2, symbol], [2, dec], [2, low], [2, cap], [12, fbPass]];
+  var sym = '~!@#$%^&*()_';
+  var b64 = cap + low + num + './';
+
+  var charset = '';
+  if (reqs[0]) {charset += num};
+  if (reqs[1]) {charset += cap};
+  if (reqs[2]) {charset += low};
+  if (reqs[3]) {charset += sym};
+
+  reqs = [[reqs[4], num],
+         [reqs[5], cap], 
+         [reqs[6], low], 
+         [reqs[7], sym], 
+         [reqs[8]-(reqs[4]+reqs[5]+reqs[6]+reqs[7]), charset]];
+
+  console.log(reqs);
+
 
   var concat = masspass + "" + domain + "" + username;
-	var salt = "$2a$12$b0MHMsT3ErLoTRjpjzsCie";
+	var salt = "$2a$11$b0MHMsT3ErLoTRjpjzsCie";
 
-  var callback = function(newHash) {
-    var hashPart = newHash.substr(29);
-    var hashHex = convert(hashPart, b64, hex)[0];
-    var hashFB = convert(hashPart, b64, fbPass)[0];
-
-    var comboHash = '';
-    var result = [0, hashPart];
-    for (var i = 0; i<req.length; i++) {
-      result = convert(result[1], b64, req[i][1], req[i][0]);
-      comboHash += result[0];
+  var callback = function(hash) {
+    var hash = hash.substr(29);
+    var password = '';
+    var result = [0, hash];
+    for (var i = 0; i<reqs.length; i++) {
+      result = convert(result[1], b64, reqs[i][1], reqs[i][0]);
+      password += result[0];
     }
 
-    var shuffleHash = shuffle(hashPart, b64, comboHash);
 
-    var out = newHash + "\n" + hashPart + "\n" + hashPart.length + "\n" + hashHex + "\n" + hashFB + "\n" + comboHash + "\n" + shuffleHash;
-    console.log(out);
-    //$("#pass").value(hashFB); 
-    alert(out);
+    var shuffled = shuffle(hash.split("").reverse().join(""), b64, password);
+
+    var out = hash + "\n" + password + "\n" + shuffled;
+    //alert(out);
+    copyToClipboard(shuffled);
   }
 
   bc = new bCrypt();
@@ -150,4 +159,3 @@ var divide = function(num, base, mod) {
 
   return [quotient, rem];
 }
-

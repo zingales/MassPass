@@ -17,9 +17,11 @@ var main = function () {
 	document.forms["masspass_form"]["onsubmit"] = handleSubmit;
 	var display_url = document.getElementById("display_url");
 	display_url.innerHTML = domain;
-	loadRequirements(domain);
-	//injectPassword('blammmmmmmm');
-	parseXML(domain);
+	var vals = parseXML(domain);
+  if (!vals) {
+    vals = loadFromLocalStorage(domain);
+  }
+  loadRequirements(vals);
 }
 
 var injectPassword = function (password) {
@@ -28,7 +30,7 @@ var injectPassword = function (password) {
 					for (var i=0; i < inputs.length; i++) { \
 						if (inputs[i].type == 'password') {";
 	injection += "flag = true;inputs[i].value = '" + password + "';inputs[i].focus();}}";
-	injection += "if (!flag) { alert('failure'); }";
+	injection += "if (!flag) { window.prompt ('Copy to clipboard: Ctrl+C, Enter', '" + password + "'); }";
 	window.close();
 	chrome.tabs.executeScript(null,{code:injection});
 }
@@ -71,17 +73,20 @@ var handleSubmit = function(event) {
 	var upper = form["upper"];
 	var lower = form["lower"];
 
-	var vals = storeRequirements(domain);
+  var vals = storeRequirements(domain);
 	var genPass = generatePass(password.value, domain, username.value, vals);
 	return false;
 }
 
-var loadRequirements = function(domainstr) {
+var loadFromLocalStorage = function(domainstr) {
   var vals = JSON.parse(localStorage.getItem(domainstr));
-  if (true || vals === null || vals === undefined || vals.length != 5){
-    vals = [['0123456789', 0], ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 0], ['abcdefghijklmnopqrstuvwxyz', 0], ['~!@#$%^&*()_', 0], 20];
+  if (vals === null || vals === undefined || vals.length != 5){
+    vals = [['0123456789', 0], ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 0], ['abcdefghijklmnopqrstuvwxyz', 0], ['~!@#$%^&*()_', 0], 40];
   }
+  return vals;
+}
 
+var loadRequirements = function(vals) {
   document.getElementsByName('num')[0].checked = vals[0][1] != -1;
   document.getElementsByName('upper')[0].checked = vals[1][1] != -1;
   document.getElementsByName('lower')[0].checked = vals[2] != -1;
@@ -99,14 +104,14 @@ var storeRequirements = function(domain) {
   var vals = new Array();
 
   vals[0] = ['0123456789', parseInt(document.getElementsByName('num_num')[0].value)];
-  vals[1] = ['ABCDEFGHIJKLMNOPQRSTUV', parseInt(document.getElementsByName('upper_num')[0].value)];
-  vals[2] = ['abcdefghijklmnopqrstuv', parseInt(document.getElementsByName('lower_num')[0].value)];
+  vals[1] = ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', parseInt(document.getElementsByName('upper_num')[0].value)];
+  vals[2] = ['abcdefghijklmnopqrstuvwxyz', parseInt(document.getElementsByName('lower_num')[0].value)];
   vals[3] = ['~!@#$%^&*()_', parseInt(document.getElementsByName('sym_num')[0].value)];
 
   if (!document.getElementsByName('num')[0].checked) { vals[0][1] = -1 };
-  if (!document.getElementsByName('upper')[0].checked) { vals[1][1] = -1 }; 
-  if (!document.getElementsByName('lower')[0].checked) { vals[2][1] = -1 }; 
-  if (!document.getElementsByName('sym')[0].checked) { vals[3][1] = -1 }; 
+  if (!document.getElementsByName('upper')[0].checked) { vals[1][1] = -1 };
+  if (!document.getElementsByName('lower')[0].checked) { vals[2][1] = -1 };
+  if (!document.getElementsByName('sym')[0].checked) { vals[3][1] = -1 };
 
   vals[4] = parseInt(document.getElementsByName('max_num')[0].value);
 
@@ -115,7 +120,7 @@ var storeRequirements = function(domain) {
   return vals;
 }
 
-function copyToClipboard (text) {
+function copyPrompt(text) {
   window.prompt ("Copy to clipboard: Ctrl+C, Enter", text);
 }
 
@@ -129,25 +134,21 @@ var generatePass = function(masspass, domain, username, reqs) {
   if (reqs[3][1] != -1) {charset += reqs[3][0]};
   reqs[4] = [charset, reqs[4]-(reqs[0][1]+reqs[1][1]+reqs[2][1]+reqs[3][1])];
 
-  var concat = masspass + "" + domain + "" + username;
-	var salt = "$2a$11$b0MHMsT3ErLoTRjpjzsCie";
-
   var callback = function(hash) {
-    var hash = hash.substr(29);
+    hash = hash.substr(29);
     var password = '';
     var result = [0, hash];
     for (var i = 0; i<reqs.length; i++) {
       result = convert(result[1], b64, reqs[i][0], reqs[i][1]);
       password += result[0];
     }
+    password = shuffle(hash.split("").reverse().join(""), b64, password);
 
-
-    var shuffled = shuffle(hash.split("").reverse().join(""), b64, password);
-
-    var out = hash + "\n" + password + "\n" + shuffled;
-    copyToClipboard(shuffled);
+    injectPassword(password);
   }
 
+  var concat = masspass + "" + domain + "" + username;
+	var salt = "$2a$11$b0MHMsT3ErLoTRjpjzsCie";
   bc = new bCrypt();
   bc.hashpw(concat, salt, callback, function() {});
 }

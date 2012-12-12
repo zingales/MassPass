@@ -1,5 +1,14 @@
 <sites>
 	<site>
+		<domain>default</domain>
+		<minimum>8</minimum>
+		<maximum>16</maximum>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>0</symbols>
+	</site>
+	<site>
 		<domain>google.com</domain>
 		<minimum>8</minimum>
 		<maximum>-1</maximum>

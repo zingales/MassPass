@@ -14,11 +14,11 @@ chrome.tabs.getSelected(null, function(tab) { //<-- "tab" has all the informatio
 
 var main = function () {
 	document.forms["masspass_form"]["onsubmit"] = handleSubmit;
-	document.forms["test_form"]["onsubmit"] = parseXML;
 	var display_url = document.getElementById("display_url");
 	display_url.innerHTML = domain;
 	loadRequirements(domain);
 	//injectPassword('blammmmmmmm');
+	parseXML(domain);
 }
 
 var injectPassword = function (password) {
@@ -32,16 +32,33 @@ var injectPassword = function (password) {
 	chrome.tabs.executeScript(null,{code:injection});
 }
 
-var parseXML = function () {
+var parseXML = function (domainstr) {
 	xmlhttp = new XMLHttpRequest();
 	xmlhttp.open("GET","sites.xml",false);
 	xmlhttp.send();
 	xml = xmlhttp.responseXML;
 	var site=xml.getElementsByTagName("site");
-	console.log(site);
+	
+	var vals = new Array();
+	
 	for (i=0;i<site.length;i++) {
-		alert(site[i].getElementsByTagName("domain")[0].childNodes[0].nodeValue);
+		if (site[i].getElementsByTagName("domain")[0].childNodes[0].nodeValue == domainstr) {
+		
+			vals[0] = ['1234567890', parseInt(site[i].getElementsByTagName("numbers")[0].childNodes[0].nodeValue)];
+			vals[1] = ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', parseInt(site[i].getElementsByTagName("uppercase")[0].childNodes[0].nodeValue)];
+			vals[2] = ['abcdefghijklmnopqrstuvwxyz', parseInt(site[i].getElementsByTagName("lowercase")[0].childNodes[0].nodeValue)];
+			vals[3] = ['~!@#$%^&*()_', parseInt(site[i].getElementsByTagName("symbols")[0].childNodes[0].nodeValue)];
+			vals[4] = parseInt(site[i].getElementsByTagName("maximum")[0].childNodes[0].nodeValue);
+			
+			return vals;
+		}
+		/*console.log(i);
+		console.log(site[i]);
+		console.log(site[i].getElementsByTagName("domain"));
+		//alert(site[i].getElementsByTagName("domain")[0].childNodes[0].nodeValue);*/
 	}
+	
+	return false;
 }
 
 var handleSubmit = function(event) {
@@ -53,7 +70,7 @@ var handleSubmit = function(event) {
 	var upper = form["upper"];
 	var lower = form["lower"];
 
-  var vals = storeRequirements(domain);
+	var vals = storeRequirements(domain);
 	var genPass = generatePass(password.value, domain, username.value, vals);
 	return false;
 }
@@ -61,7 +78,7 @@ var handleSubmit = function(event) {
 var loadRequirements = function(domainstr) {
   var vals = JSON.parse(localStorage.getItem(domainstr));
   if (true || vals === null || vals === undefined || vals.length != 5){
-    vals = [['0123456789', 0], ['ABCDEFGHIJKLMNOPQRSTUV', 0], ['abcdefghijklmnopqrstuv', 0], ['~!@#$%^&*()_', 0], 20];
+    vals = [['0123456789', 0], ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', 0], ['abcdefghijklmnopqrstuvwxyz', 0], ['~!@#$%^&*()_', 0], 20];
   }
 
   document.getElementsByName('num')[0].checked = vals[0][1] != -1;
@@ -147,7 +164,7 @@ var shuffle = function(hash, base, pass) {
 }
 
 var convert = function(num, base, mod, len) {
-  if(typeof(len)==='undefined') len = 1000;
+  if(typeof(len)==='undefined' || len < 0) len = 1000;
   var newBase = '';
   var result;
   while (num.length > 0 && newBase.length < len) {

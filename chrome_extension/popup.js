@@ -8,7 +8,8 @@ $(document).ready(function(){
 var domain;
 chrome.tabs.getSelected(null, function(tab) { //<-- "tab" has all the information
   // TODO add a better domain getter.
-	domain =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","");
+	var splits =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","").split(".");
+	domain = splits[splits.length-2]+"."+splits[splits.length-1];
 	main();
 });
 

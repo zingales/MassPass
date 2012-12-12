@@ -9,9 +9,17 @@ var domain;
 var username;
 
 chrome.tabs.getSelected(null, function(tab) { //<-- "tab" has all the information
-  // TODO add a better domain getter.
-	var splits =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","").split(".");
-	domain = splits[splits.length-2]+"."+splits[splits.length-1];
+	// var splits =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","").split(".");
+  var url = purl(tab.url);
+	// domain = splits[splits.length-2]+"."+splits[splits.length-1];
+  domain = url.attr('host').replace("www.", "");
+  var la = /[-\w]+\.(?:[-\w]+\.xn--[-\w]+|[-\w]{3,}|[-\w]+\.[-\w]{2})$/i
+  var match = la.exec(domain);
+  if (match == null) {
+    alert('not a valid domain!');
+  } else {
+    domain = match[0];
+  }
 	main();
 });
 

@@ -22,13 +22,14 @@ var main = function () {
 }
 
 var injectPassword = function (password) {
-	var injection = "var inputs = document.getElementsByTagName('input'); \
+	/*var injection = "var inputs = document.getElementsByTagName('input'); \
 					for (var i=0; i < inputs.length; i++) { \
 						if (inputs[i].type == 'password') {" + \
 							"alert('" + password + "'); \
 						} \
 					}";
-	chrome.tabs.executeScript(null,{code:injection});
+	chrome.tabs.executeScript(null,{code:injection});*/
+	alert(password);
 }
 
 var parseXML = function () {
@@ -79,10 +80,10 @@ var loadRequirements = function(domainstr) {
 var storeRequirements = function(domain) {
   var vals = new Array();
 
-  if (vals[0]) {vals[0] = ['0123456789', parseInt(document.getElementsByName('num_num')[0].value)];
-  if (vals[1]) {vals[1] = ['ABCDEFGHIJKLMNOPQRSTUV', parseInt(document.getElementsByName('upper_num')[0].value)];
-  if (vals[2]) {vals[2] = ['abcdefghijklmnopqrstuv', parseInt(document.getElementsByName('lower_num')[0].value)];
-  if (vals[3]) {vals[3] = ['~!@#$%^&*()_', parseInt(document.getElementsByName('sym_num')[0].value)];
+  if (vals[0]) {vals[0] = ['0123456789', parseInt(document.getElementsByName('num_num')[0].value)];}
+  if (vals[1]) {vals[1] = ['ABCDEFGHIJKLMNOPQRSTUV', parseInt(document.getElementsByName('upper_num')[0].value)];}
+  if (vals[2]) {vals[2] = ['abcdefghijklmnopqrstuv', parseInt(document.getElementsByName('lower_num')[0].value)];}
+  if (vals[3]) {vals[3] = ['~!@#$%^&*()_', parseInt(document.getElementsByName('sym_num')[0].value)];}
 
   if (!document.getElementsByName('num')[0].checked) { vals[0][1] = -1 };
   if (!document.getElementsByName('upper')[0].checked) { vals[1][1] = -1 }; 

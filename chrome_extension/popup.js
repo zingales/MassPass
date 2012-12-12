@@ -48,32 +48,38 @@ var handleSubmit = function(event) {
 
 var loadRequirements = function(domainstr) {
   var vals = JSON.parse(localStorage.getItem(domainstr));
-  if (vals === null || vals === undefined){
-  //                 num, upper, lower, symol, nunNum, uppnum, lownum, symnum)
-    vals = new Array(true, true, false, true, 0      ,      0,   0   , 0, 20);
+  if (vals === null || vals === undefined || vals.length != 4){
+    vals = [['0123456789', 0], ['ABCDEFGHIJKLMNOPQRSTUV', 0], ['abcdefghijklmnopqrstuv', 0], ['~!@#$%^&*()_', 0]];
   }
-  document.getElementsByName('num')[0].checked = vals[0];
-  document.getElementsByName('upper')[0].checked = vals[1];
-  document.getElementsByName('lower')[0].checked = vals[2];
-  document.getElementsByName('sym')[0].checked = vals[3];
-  document.getElementsByName('num_num')[0].value = vals[4];
-  document.getElementsByName('upper_num')[0].value = vals[5];
-  document.getElementsByName('lower_num')[0].value = vals[6];
-  document.getElementsByName('sym_num')[0].value = vals[7];
-  document.getElementsByName('max_num')[0].value = vals[8];
+
+  document.getElementsByName('num')[0].checked = vals[0][1] == -1;
+  document.getElementsByName('upper')[0].checked = vals[1][1] == -1;
+  document.getElementsByName('lower')[0].checked = vals[2] == -1;
+  document.getElementsByName('sym')[0].checked = vals[3] == -1;
+
+  document.getElementsByName('num_num')[0].value = vals[0][1];
+  document.getElementsByName('upper_num')[0].value = vals[1][1];
+  document.getElementsByName('lower_num')[0].value = vals[2][1];
+  document.getElementsByName('sym_num')[0].value = vals[3][1];
+
+  document.getElementsByName('max_num')[0].value = vals[4];
 }
 
 var storeRequirements = function(domain) {
   var vals = new Array();
-  vals[0] = document.getElementsByName('num')[0].checked;
-  vals[1] = document.getElementsByName('upper')[0].checked;
-  vals[2] = document.getElementsByName('lower')[0].checked;
-  vals[3] = document.getElementsByName('sym')[0].checked;
-  vals[4] = parseInt(document.getElementsByName('num_num')[0].value);
-  vals[5] = parseInt(document.getElementsByName('upper_num')[0].value);
-  vals[6] = parseInt(document.getElementsByName('lower_num')[0].value);
-  vals[7] = parseInt(document.getElementsByName('sym_num')[0].value);
-  vals[8] = parseInt(document.getElementsByName('max_num')[0].value);
+
+  if (vals[0]) {vals[0] = ['0123456789', parseInt(document.getElementsByName('num_num')[0].value)];
+  if (vals[1]) {vals[1] = ['ABCDEFGHIJKLMNOPQRSTUV', parseInt(document.getElementsByName('upper_num')[0].value)];
+  if (vals[2]) {vals[2] = ['abcdefghijklmnopqrstuv', parseInt(document.getElementsByName('lower_num')[0].value)];
+  if (vals[3]) {vals[3] = ['~!@#$%^&*()_', parseInt(document.getElementsByName('sym_num')[0].value)];
+
+  if (!document.getElementsByName('num')[0].checked) { vals[0][1] = -1 };
+  if (!document.getElementsByName('upper')[0].checked) { vals[1][1] = -1 }; 
+  if (!document.getElementsByName('lower')[0].checked) { vals[2][1] = -1 }; 
+  if (!document.getElementsByName('sym')[0].checked) { vals[3][1] = -1 }; 
+
+  vals[4] = parseInt(document.getElementsByName('max_num')[0].value);
+
   localStorage.setItem(domain, JSON.stringify(vals));
   return vals;
 }

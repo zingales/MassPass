@@ -18,8 +18,16 @@ var main = function () {
 	var display_url = document.getElementById("display_url");
 	display_url.innerHTML = domain;
 	loadRequirements(domain);
-	//alert('blam');
-	chrome.tabs.executeScript(null,{code:"document.body.bgColor='red'"});
+	chrome.tabs.executeScript(null,{file:"injection.js"});
+}
+
+var injectPassword = function (password) {
+	var injection = "var inputs = document.getElementsByTagName('input'); \
+					for (var i=0; i < inputs.length; i++) { \
+						if (inputs[i].type == 'password') { \
+							alert('blammety'); \
+						} \
+					}";
 }
 
 var parseXML = function () {

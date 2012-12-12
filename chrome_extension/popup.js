@@ -18,16 +18,16 @@ var main = function () {
 	var display_url = document.getElementById("display_url");
 	display_url.innerHTML = domain;
 	loadRequirements(domain);
-	injectPassword('blammmmmmmm');
+	//injectPassword('blammmmmmmm');
 }
 
 var injectPassword = function (password) {
 	var injection = "var inputs = document.getElementsByTagName('input'); \
 					for (var i=0; i < inputs.length; i++) { \
 						if (inputs[i].type == 'password') {";
-	injection += "inputs[i].value = '" + password + "';}}";
+	injection += "inputs[i].value = '" + password + "';inputs[i].focus();}}";
+	window.close();
 	chrome.tabs.executeScript(null,{code:injection});
-	//alert(password);
 }
 
 var parseXML = function () {

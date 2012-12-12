@@ -58,14 +58,14 @@ var handleSubmit = function(event) {
 
 var loadRequirements = function(domainstr) {
   var vals = JSON.parse(localStorage.getItem(domainstr));
-  if (vals === null || vals === undefined || vals.length != 4){
-    vals = [['0123456789', 0], ['ABCDEFGHIJKLMNOPQRSTUV', 0], ['abcdefghijklmnopqrstuv', 0], ['~!@#$%^&*()_', 0]];
+  if (true || vals === null || vals === undefined || vals.length != 5){
+    vals = [['0123456789', 0], ['ABCDEFGHIJKLMNOPQRSTUV', 0], ['abcdefghijklmnopqrstuv', 0], ['~!@#$%^&*()_', 0], 20];
   }
 
-  document.getElementsByName('num')[0].checked = vals[0][1] == -1;
-  document.getElementsByName('upper')[0].checked = vals[1][1] == -1;
-  document.getElementsByName('lower')[0].checked = vals[2] == -1;
-  document.getElementsByName('sym')[0].checked = vals[3] == -1;
+  document.getElementsByName('num')[0].checked = vals[0][1] != -1;
+  document.getElementsByName('upper')[0].checked = vals[1][1] != -1;
+  document.getElementsByName('lower')[0].checked = vals[2] != -1;
+  document.getElementsByName('sym')[0].checked = vals[3] != -1;
 
   document.getElementsByName('num_num')[0].value = vals[0][1];
   document.getElementsByName('upper_num')[0].value = vals[1][1];
@@ -78,10 +78,10 @@ var loadRequirements = function(domainstr) {
 var storeRequirements = function(domain) {
   var vals = new Array();
 
-  if (vals[0]) {vals[0] = ['0123456789', parseInt(document.getElementsByName('num_num')[0].value)];}
-  if (vals[1]) {vals[1] = ['ABCDEFGHIJKLMNOPQRSTUV', parseInt(document.getElementsByName('upper_num')[0].value)];}
-  if (vals[2]) {vals[2] = ['abcdefghijklmnopqrstuv', parseInt(document.getElementsByName('lower_num')[0].value)];}
-  if (vals[3]) {vals[3] = ['~!@#$%^&*()_', parseInt(document.getElementsByName('sym_num')[0].value)];}
+  vals[0] = ['0123456789', parseInt(document.getElementsByName('num_num')[0].value)];
+  vals[1] = ['ABCDEFGHIJKLMNOPQRSTUV', parseInt(document.getElementsByName('upper_num')[0].value)];
+  vals[2] = ['abcdefghijklmnopqrstuv', parseInt(document.getElementsByName('lower_num')[0].value)];
+  vals[3] = ['~!@#$%^&*()_', parseInt(document.getElementsByName('sym_num')[0].value)];
 
   if (!document.getElementsByName('num')[0].checked) { vals[0][1] = -1 };
   if (!document.getElementsByName('upper')[0].checked) { vals[1][1] = -1 }; 
@@ -91,6 +91,7 @@ var storeRequirements = function(domain) {
   vals[4] = parseInt(document.getElementsByName('max_num')[0].value);
 
   localStorage.setItem(domain, JSON.stringify(vals));
+
   return vals;
 }
 
@@ -99,26 +100,14 @@ function copyToClipboard (text) {
 }
 
 var generatePass = function(masspass, domain, username, reqs) {
-  var num = '0123456789';
-  var low = 'abcdefghijklmnopqrstuvwxyz';
-  var cap = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  var sym = '~!@#$%^&*()_';
-  var b64 = cap + low + num + './';
-
+  var b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 'abcdefghijklmnopqrstuvwxyz' + '0123456789' + './';
   var charset = '';
-  if (reqs[0]) {charset += num};
-  if (reqs[1]) {charset += cap};
-  if (reqs[2]) {charset += low};
-  if (reqs[3]) {charset += sym};
 
-  reqs = [[reqs[4], num],
-         [reqs[5], cap], 
-         [reqs[6], low], 
-         [reqs[7], sym], 
-         [reqs[8]-(reqs[4]+reqs[5]+reqs[6]+reqs[7]), charset]];
-
-  console.log(reqs);
-
+  if (reqs[0][1] != -1) {charset += reqs[0][0]};
+  if (reqs[1][1] != -1) {charset += reqs[1][0]};
+  if (reqs[2][1] != -1) {charset += reqs[2][0]};
+  if (reqs[3][1] != -1) {charset += reqs[3][0]};
+  reqs[4] = [charset, reqs[4]-(reqs[0][1]+reqs[1][1]+reqs[2][1]+reqs[3][1])];
 
   var concat = masspass + "" + domain + "" + username;
 	var salt = "$2a$11$b0MHMsT3ErLoTRjpjzsCie";
@@ -128,7 +117,7 @@ var generatePass = function(masspass, domain, username, reqs) {
     var password = '';
     var result = [0, hash];
     for (var i = 0; i<reqs.length; i++) {
-      result = convert(result[1], b64, reqs[i][1], reqs[i][0]);
+      result = convert(result[1], b64, reqs[i][0], reqs[i][1]);
       password += result[0];
     }
 
@@ -136,7 +125,6 @@ var generatePass = function(masspass, domain, username, reqs) {
     var shuffled = shuffle(hash.split("").reverse().join(""), b64, password);
 
     var out = hash + "\n" + password + "\n" + shuffled;
-    //alert(out);
     copyToClipboard(shuffled);
   }
 

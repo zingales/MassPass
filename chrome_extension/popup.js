@@ -6,6 +6,8 @@ $(document).ready(function(){
 });
 
 var domain;
+var username;
+
 chrome.tabs.getSelected(null, function(tab) { //<-- "tab" has all the information
   // TODO add a better domain getter.
 	var splits =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","").split(".");
@@ -24,12 +26,12 @@ var main = function () {
   loadRequirements(vals);
 }
 
-var injectPassword = function (password) {
+var injectPassword = function (password, username) {
 	var injection = "var inputs = document.getElementsByTagName('input'); \
 					var flag = false; \
 					for (var i=0; i < inputs.length; i++) { \
 						if (inputs[i].type == 'password') {";
-	injection += "flag = true;inputs[i].value = '" + password + "';inputs[i].focus();}}";
+	injection += "flag = true;inputs[i].value = '" + password + "';inputs[i-1].value='"+username+"';inputs[i].focus();}}";
 	injection += "if (!flag) { window.prompt ('Copy to clipboard: Ctrl+C, Enter', '" + password + "'); }";
 	window.close();
 	chrome.tabs.executeScript(null,{code:injection});
@@ -55,10 +57,6 @@ var parseXML = function (domainstr) {
 			
 			return vals;
 		}
-		/*console.log(i);
-		console.log(site[i]);
-		console.log(site[i].getElementsByTagName("domain"));
-		//alert(site[i].getElementsByTagName("domain")[0].childNodes[0].nodeValue);*/
 	}
 	
 	return false;
@@ -67,7 +65,7 @@ var parseXML = function (domainstr) {
 var handleSubmit = function(event) {
 	var form = event.srcElement;
 	var password = form["password"];
-	var username = form["username"];
+	username = form["username"];
 	var num = form["num"];
 	var sym = form["sym"];
 	var upper = form["upper"];
@@ -144,7 +142,7 @@ var generatePass = function(masspass, domain, username, reqs) {
     }
     password = shuffle(hash.split("").reverse().join(""), b64, password);
 
-    injectPassword(password);
+    injectPassword(password, username);
   }
 
   var concat = masspass + "" + domain + "" + username;

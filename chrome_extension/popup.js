@@ -17,7 +17,9 @@ var main = function () {
 	document.forms["test_form"]["onsubmit"] = parseXML;
 	var display_url = document.getElementById("display_url");
 	display_url.innerHTML = domain;
-  loadRequirements(domain);
+	loadRequirements(domain);
+	//alert('blam');
+	chrome.tabs.executeScript(null,{code:"document.body.bgColor='red'"});
 }
 
 var parseXML = function () {

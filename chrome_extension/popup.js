@@ -23,9 +23,11 @@ var main = function () {
 
 var injectPassword = function (password) {
 	var injection = "var inputs = document.getElementsByTagName('input'); \
+					var flag = false; \
 					for (var i=0; i < inputs.length; i++) { \
 						if (inputs[i].type == 'password') {";
-	injection += "inputs[i].value = '" + password + "';inputs[i].focus();}}";
+	injection += "flag = true;inputs[i].value = '" + password + "';inputs[i].focus();}}";
+	injection += "if (!flag) { alert('failure'); }";
 	window.close();
 	chrome.tabs.executeScript(null,{code:injection});
 }

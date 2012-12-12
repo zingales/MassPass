@@ -22,14 +22,12 @@ var main = function () {
 }
 
 var injectPassword = function (password) {
-	/*var injection = "var inputs = document.getElementsByTagName('input'); \
+	var injection = "var inputs = document.getElementsByTagName('input'); \
 					for (var i=0; i < inputs.length; i++) { \
-						if (inputs[i].type == 'password') {" + \
-							"alert('" + password + "'); \
-						} \
-					}";
-	chrome.tabs.executeScript(null,{code:injection});*/
-	alert(password);
+						if (inputs[i].type == 'password') {";
+	injection += "inputs[i].value = '" + password + "';}}";
+	chrome.tabs.executeScript(null,{code:injection});
+	//alert(password);
 }
 
 var parseXML = function () {

@@ -1,5 +1,14 @@
 <sites>
 	<site>
+		<domain>google.com</domain>
+		<minimum>8</minimum>
+		<maximum>-1</maximum>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>0</symbols>
+	</site>
+	<site>
 		<domain>facebook.com</domain>
 		<minimum>6</minimum>
 		<maximum>-1</maximum>
@@ -9,12 +18,102 @@
 		<symbols>0</symbols>
 	</site>
 	<site>
-		<domain>gaybook.com</domain>
+		<domain>yahoo.com</domain>
+		<minimum>6</minimum>
+		<maximum>32</maximum>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>0</symbols>
+	</site>
+	<site>
+		<domain>wikipedia.org</domain>
+		<minimum>1</minimum>
+		<maximum>-1</maximum>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>0</symbols>
+	</site>
+	<site>
+		<domain>live.com</domain>
 		<minimum>8</minimum>
+		<maximum>-1</maximum>
+		<numbers>0</numbers>
+		<uppercase>1</uppercase>
+		<lowercase>1</lowercase>
+		<symbols>0</symbols>
+	</site>
+	<site>
+		<domain>amazon.com</domain>
+		<minimum>6</minimum>
+		<maximum>-1</maximum>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>0</symbols>
+	</site>
+	<site>
+		<domain>ebay.com</domain>
+		<minimum>6</minimum>
+		<maximum>-1</maximum>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>-1</symbols>
+	</site>
+	<site>
+		<domain>twitter.com</domain>
+		<minimum>6</minimum>
+		<maximum>-1</maximum>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>0</symbols>
+	</site>
+	<site>
+		<domain>craigslist.com</domain>
+		<minimum>6</minimum>
+		<maximum>-1</maximum>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>0</symbols>
+	</site>
+	<site>
+		<domain>wordpress.com</domain>
+		<minimum>6</minimum>
+		<maximum>-1</maximum>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>0</symbols>
+	</site>
+	<site>
+		<domain>aol.com</domain>
+		<minimum>6</minimum>
 		<maximum>16</maximum>
-		<numbers>true</numbers>
-		<uppercase>true</uppercase>
-		<lowercase>true</lowercase>
-		<symbols>true</symbols>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>0</symbols>
+	</site>
+	<site>
+		<domain>ask.com</domain>
+		<minimum>6</minimum>
+		<maximum>-1</maximum>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>0</symbols>
+	</site>
+	<site>
+		<domain>linkedin.com</domain>
+		<minimum>6</minimum>
+		<maximum>-1</maximum>
+		<numbers>0</numbers>
+		<uppercase>0</uppercase>
+		<lowercase>0</lowercase>
+		<symbols>0</symbols>
 	</site>
 </sites>

@@ -1,0 +1,32 @@
+body {
+	min-width:280px;
+} 
+#display_url {
+	display: inline;
+} 
+#left {
+	width: 50%;
+	float:left;
+	height: 100%;
+} 
+#right {
+	width: 50%;
+	float:left;
+	height: 100%;
+} 
+input[type=number] {
+	/*height: 25%;*/
+	width: 30px;
+}
+input[type=checkbox] {
+	/*height: 25%;*/
+}
+table {
+	/*text-align: center;*/
+}
+#display_url {
+	font-weight:bold;
+}
+.clickable {
+	cursor:pointer;
+}

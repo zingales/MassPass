@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <title>MassPass Popup</title>
+	<link rel="stylesheet" type="text/css" href="popup.css" />
+    <!-- JavaScript and HTML must be in separate files for security. -->
+    <script src="MochiKit/MochiKit.js" type="text/javascript"></script>
+    <script src="Clipperz/Base.js" type="text/javascript"></script>
+    <script src="Clipperz/ByteArray.js" type="text/javascript"></script>
+    <script src="Clipperz/Crypto/BigInt.js" type="text/javascript"></script>
+    <script src="Clipperz/Crypto/SHA.js" type="text/javascript"></script>
+    <script src="Clipperz/Crypto/AES.js" type="text/javascript"></script>
+    <script src="Clipperz/Crypto/PRNG.js" type="text/javascript"></script>
+
+    <script src="bCrypt.js"></script>
+
+    <script type="text/javascript" src="purl.js" ></script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jquery.zclip.js"></script>
+
+    <script src="popup.js"></script>
+  </head>
+  
+  <body>
+	<!--   <div>
+      <a href="#" id="copy-static">copy</a>
+      <span id="static">asdfasdf</span>
+    </div> -->
+	<!-- Domain: <div id="display_url"></div> -->
+	<form name="masspass_form" action="">
+		MassPass: <input id="tabindex1" type="password" name="password" placeholder=">=16 characters" />
+		<br>
+		Username: <input type="text" name="username" />
+		<br>
+		URL: <input type="text" name="url" />
+		<br>
+		<img src="http://www.capitolpride.org/images/symbol_triangle_black.png" height="10" width="10" id="toggle_button" class="clickable" />
+			<span class="clickable" >additional password requirements</span>
+		<div id="toggleText" style="display: none">
+			<table>
+				<tr>
+					<td>
+					Max Length:
+					<input type="number" name="max_num" min="-1" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="checkbox" name="num" /> 
+						<input type="number" name="num_num" min="0" />
+						Numbers
+					</td>
+				</tr>
+					<td>
+						<input type="checkbox" name="upper" /> 
+						<input type="number" name="upper_num" min="0" />
+						Uppercase 
+					</td>
+				<tr>
+					<td>
+					<input type="checkbox" name="lower" > 
+					<input type="number" name="lower_num" min="0" >
+					Lowercase
+					</td>	
+				</tr>
+				<tr>
+					<td>
+					<input type="checkbox" name="sym" />  
+					<input type="number" name="sym_num" min="0" />
+					Symbols
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br>
+		<input type="submit" value="Generate" />
+	</form>
+  </body>
+</html>

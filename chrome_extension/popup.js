@@ -10,13 +10,15 @@ $(document).ready(function(){
 
 var domain;
 var username;
-
-console.log(chrome.extension.getBackgroundPage());
+var bkg = chrome.extension.getBackgroundPage();
+/*console.log(bkg);
+bkg.sessionStorage.setItem("password", "blammm");
+console.log(bkg);
+console.log(bkg.sessionStorage.getItem("password"));*/
 
 chrome.tabs.getSelected(null, function(tab) {
 	// var splits =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","").split(".");
   var url = purl(tab.url);
-  console.log(url);
 	// domain = splits[splits.length-2]+"."+splits[splits.length-1];
   domain = url.attr('host').replace("www.", "");
   var la = /[-\w]+\.(?:[-\w]+\.xn--[-\w]+|[-\w]{3,}|[-\w]+\.[-\w]{2})$/i
@@ -33,7 +35,12 @@ var main = function () {
 	document.forms["masspass_form"]["onsubmit"] = handleSubmit;
 	var display_url = document.getElementById("display_url");
 	display_url.innerHTML = domain;
-	document.getElementById("tabindex1").focus();
+	var mp = bkg.sessionStorage.getItem("password");
+	//if (mp != null) {
+	document.getElementById("tabindex1").value=mp;
+	console.log(mp);
+	
+	//document.getElementById("tabindex1").focus();
 	var vals = parseXML(domain);
   if (!vals) {
     vals = loadFromLocalStorage(domain);
@@ -155,6 +162,8 @@ function copyPrompt(text) {
 }
 
 var generatePass = function(masspass, domain, username, reqs) {
+  bkg.sessionStorage.setItem("password", masspass);
+  
   var b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 'abcdefghijklmnopqrstuvwxyz' + '0123456789' + './';
   var charset = '';
 

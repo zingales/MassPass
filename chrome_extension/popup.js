@@ -13,6 +13,7 @@ var username;
 chrome.tabs.getSelected(null, function(tab) {
 	// var splits =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","").split(".");
   var url = purl(tab.url);
+  console.log(url);
 	// domain = splits[splits.length-2]+"."+splits[splits.length-1];
   domain = url.attr('host').replace("www.", "");
   var la = /[-\w]+\.(?:[-\w]+\.xn--[-\w]+|[-\w]{3,}|[-\w]+\.[-\w]{2})$/i

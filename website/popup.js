@@ -27,11 +27,13 @@ var username;
 });*/
 
 var getDomain = function (raw_url) {
+	console.log(raw_url);
 	var url = purl(raw_url);
+	console.log(url);
 	domain = url.attr('host').replace("www.", "");
 	var la = /[-\w]+\.(?:[-\w]+\.xn--[-\w]+|[-\w]{3,}|[-\w]+\.[-\w]{2})$/i
 	var match = la.exec(domain);
-	if (match == null) {
+	if (match == null) {d
 		alert("not a valid url!");
 	} else {
 		domain = match[0];

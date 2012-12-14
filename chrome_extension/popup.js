@@ -7,8 +7,11 @@ $(document).ready(function(){
     });
 });
 
+
 var domain;
 var username;
+
+console.log(chrome.extension.getBackgroundPage());
 
 chrome.tabs.getSelected(null, function(tab) {
 	// var splits =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","").split(".");
@@ -58,7 +61,7 @@ $(".clickable").click(function() {
 	else {
 		ele.style.display = "block";
 		img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/TriangleArrow-Right.svg/461px-TriangleArrow-Right.svg.png";
-	}
+  }
 });
 
 var parseXML = function (domainstr) {

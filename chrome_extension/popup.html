@@ -28,48 +28,49 @@
     </div> -->
 	<!-- Domain: <div id="display_url"></div> -->
 	<form name="masspass_form" action="">
-		MassPass: <input type="password" name="password" tabindex=1 />
+		MassPass: <input id="tabindex1" type="password" name="password" placeholder=">=16 characters" />
 		<br>
-		Username: <input type="text" name="username" tabindex=2 />
+		Username: <input type="text" name="username" />
 		<br>
-		<details >
-			<summary><span id="display_url">additional</span> password requirements</summary>
-				<table>
-					<tr>
-						<td>
-						Max Length:
-						<input type="number" name="max_num" min="-1" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type="checkbox" name="num" /> 
-							<input type="number" name="num_num" min="0" />
-							Numbers
-						</td>
-					</tr>
-						<td>
-							<input type="checkbox" name="upper" /> 
-							<input type="number" name="upper_num" min="0" />
-							Uppercase 
-						</td>
-					<tr>
-						<td>
-						<input type="checkbox" name="lower" > 
-						<input type="number" name="lower_num" min="0" >
-						Lowercase
-						</td>	
-					</tr>
-					<tr>
-						<td>
-						<input type="checkbox" name="sym" />  
-						<input type="number" name="sym_num" min="0" />
-						Symbols
-						</td>
-					</tr>
-				</table>
-		</details>
-		<input type="submit" value="Generate" tabindex=3 />
+		<img src="http://www.capitolpride.org/images/symbol_triangle_black.png" height="10" width="10" id="toggle_button" class="clickable" />
+			<span class="clickable" >&nbsp;<span id="display_url">additional</span> password requirements</span>
+		<div id="toggleText" style="display: none">
+			<table>
+				<tr>
+					<td>
+					Max Length:
+					<input type="number" name="max_num" min="-1" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="checkbox" name="num" /> 
+						<input type="number" name="num_num" min="0" />
+						Numbers
+					</td>
+				</tr>
+					<td>
+						<input type="checkbox" name="upper" /> 
+						<input type="number" name="upper_num" min="0" />
+						Uppercase 
+					</td>
+				<tr>
+					<td>
+					<input type="checkbox" name="lower" > 
+					<input type="number" name="lower_num" min="0" >
+					Lowercase
+					</td>	
+				</tr>
+				<tr>
+					<td>
+					<input type="checkbox" name="sym" />  
+					<input type="number" name="sym_num" min="0" />
+					Symbols
+					</td>
+				</tr>
+			</table>
+		</div>
+		<input type="submit" value="Generate" />
 	</form>
   </body>
 </html>

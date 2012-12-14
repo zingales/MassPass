@@ -1,3 +1,5 @@
+$(function() {
+
 $(document).ready(function(){
     $('a#copy-static').zclip({
         path:'js/ZeroClipboard.swf',
@@ -8,7 +10,7 @@ $(document).ready(function(){
 var domain;
 var username;
 
-chrome.tabs.getSelected(null, function(tab) { //<-- "tab" has all the information
+chrome.tabs.getSelected(null, function(tab) {
 	// var splits =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","").split(".");
   var url = purl(tab.url);
 	// domain = splits[splits.length-2]+"."+splits[splits.length-1];
@@ -27,6 +29,7 @@ var main = function () {
 	document.forms["masspass_form"]["onsubmit"] = handleSubmit;
 	var display_url = document.getElementById("display_url");
 	display_url.innerHTML = domain;
+	document.getElementById("tabindex1").focus();
 	var vals = parseXML(domain);
   if (!vals) {
     vals = loadFromLocalStorage(domain);
@@ -44,6 +47,19 @@ var injectPassword = function (password, username) {
 	window.close();
 	chrome.tabs.executeScript(null,{code:injection});
 }
+
+$(".clickable").click(function() {
+	var ele = document.getElementById("toggleText");
+	var img = document.getElementById("toggle_button");
+	if (ele.style.display == "block") {
+		ele.style.display = "none";
+		img.src = "http://www.capitolpride.org/images/symbol_triangle_black.png";
+	}
+	else {
+		ele.style.display = "block";
+		img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/TriangleArrow-Right.svg/461px-TriangleArrow-Right.svg.png";
+	}
+});
 
 var parseXML = function (domainstr) {
 	xmlhttp = new XMLHttpRequest();
@@ -73,6 +89,10 @@ var parseXML = function (domainstr) {
 var handleSubmit = function(event) {
 	var form = event.srcElement;
 	var password = form["password"];
+	if (password.value.length < 16) {
+		alert("Error: Your MassPass must be at least 16 characters");
+		window.close();
+	}
 	username = form["username"];
 	var num = form["num"];
 	var sym = form["sym"];
@@ -203,3 +223,5 @@ var divide = function(num, base, mod) {
 
   return [quotient, rem];
 }
+
+});

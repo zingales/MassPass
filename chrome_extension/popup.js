@@ -1,11 +1,11 @@
 $(function() {
 
-$(document).ready(function(){
-    $('a#copy-static').zclip({
-        path:'js/ZeroClipboard.swf',
-        copy:"copied_this_text"
-    });
-});
+// $(document).ready(function(){
+//     $('a#copy-static').zclip({
+//         path:'js/ZeroClipboard.swf',
+//         copy:"copied_this_text"
+//     });
+// });
 
 
 var domain;
@@ -17,14 +17,13 @@ console.log(bkg);
 console.log(bkg.sessionStorage.getItem("password"));*/
 
 chrome.tabs.getSelected(null, function(tab) {
-	// var splits =  tab.url.replace('http://','').replace('https://','').split(/[/?#]/)[0].replace("www.","").split(".");
   var url = purl(tab.url);
-	// domain = splits[splits.length-2]+"."+splits[splits.length-1];
   domain = url.attr('host').replace("www.", "");
   var la = /[-\w]+\.(?:[-\w]+\.xn--[-\w]+|[-\w]{3,}|[-\w]+\.[-\w]{2})$/i
   var match = la.exec(domain);
   if (match == null) {
-    alert('not a valid domain!');
+    // alert('not a valid domain!');
+    console.log("not a valid domain");
   } else {
     domain = match[0];
   }
@@ -36,11 +35,8 @@ var main = function () {
 	var display_url = document.getElementById("display_url");
 	display_url.innerHTML = domain;
 	var mp = bkg.sessionStorage.getItem("password");
-	//if (mp != null) {
 	document.getElementById("tabindex1").value=mp;
 	console.log(mp);
-	
-	//document.getElementById("tabindex1").focus();
 	var vals = parseXML(domain);
   if (!vals) {
     vals = loadFromLocalStorage(domain);

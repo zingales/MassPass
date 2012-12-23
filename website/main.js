@@ -1,5 +1,6 @@
 $(function() {
 
+
 $(document).ready(function(){
     $('a#copy-static').zclip({
         path:'js/ZeroClipboard.swf',
@@ -63,7 +64,7 @@ $(".clickable").click(function() {
 		img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/TriangleArrow-Right.svg/461px-TriangleArrow-Right.svg.png";
 	}
 });
-
+// password is obviously outputed in the url
 var parseXML = function (domainstr) {
 	xmlhttp = new XMLHttpRequest();
 	xmlhttp.open("GET","sites.xml",false);

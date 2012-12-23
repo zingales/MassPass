@@ -1,20 +1,8 @@
 $(function() {
 
-// $(document).ready(function(){
-//     $('a#copy-static').zclip({
-//         path:'js/ZeroClipboard.swf',
-//         copy:"copied_this_text"
-//     });
-// });
-
-
 var domain;
 var username;
 var bkg = chrome.extension.getBackgroundPage();
-/*console.log(bkg);
-bkg.sessionStorage.setItem("password", "blammm");
-console.log(bkg);
-console.log(bkg.sessionStorage.getItem("password"));*/
 
 chrome.tabs.getSelected(null, function(tab) {
   var url = purl(tab.url);
@@ -22,7 +10,6 @@ chrome.tabs.getSelected(null, function(tab) {
   var la = /[-\w]+\.(?:[-\w]+\.xn--[-\w]+|[-\w]{3,}|[-\w]+\.[-\w]{2})$/i
   var match = la.exec(domain);
   if (match == null) {
-    // alert('not a valid domain!');
     console.log("not a valid domain");
   } else {
     domain = match[0];
@@ -44,6 +31,7 @@ var main = function () {
   loadRequirements(vals);
 }
 
+// super vunerable to js injectino (not sure that would really matter)
 var injectPassword = function (password, username) {
 	var injection = "var inputs = document.getElementsByTagName('input'); \
 					var flag = false; \

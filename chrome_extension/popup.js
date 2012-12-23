@@ -53,24 +53,13 @@ var injectPassword = function (password, username) {
 					var flag = false; \
 					for (var i=0; i < inputs.length; i++) { \
 						if (inputs[i].type == 'password') {";
-	injection += "flag = true;inputs[i].value = '" + password + "';inputs[i-1].value='"+username+"';inputs[i].focus();}}";
+	injection += "flag = true;inputs[i].value = '" + password + "';" + \
+  + "if(inputs[i-1].type== 'email') {
+      inputs[i-1].value='"+username+"';}inputs[i].focus();}}";
 	injection += "if (!flag) { window.prompt ('Copy to clipboard: Ctrl+C, Enter', '" + password + "'); }";
 	window.close();
 	chrome.tabs.executeScript(null,{code:injection});
 }
-
-$(".clickable").click(function() {
-	var ele = document.getElementById("toggleText");
-	var img = document.getElementById("toggle_button");
-	if (ele.style.display == "block") {
-		ele.style.display = "none";
-		img.src = "http://www.capitolpride.org/images/symbol_triangle_black.png";
-	}
-	else {
-		ele.style.display = "block";
-		img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/TriangleArrow-Right.svg/461px-TriangleArrow-Right.svg.png";
-  }
-});
 
 var parseXML = function (domainstr) {
 	xmlhttp = new XMLHttpRequest();

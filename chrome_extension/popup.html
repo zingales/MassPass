@@ -22,19 +22,16 @@
   </head>
   
   <body>
-	<!--   <div>
-      <a href="#" id="copy-static">copy</a>
-      <span id="static">asdfasdf</span>
-    </div> -->
-	<!-- Domain: <div id="display_url"></div> -->
 	<form name="masspass_form" action="">
 		MassPass: <input id="tabindex1" type="password" name="password" placeholder=">=16 characters" />
 		<br>
 		Username: <input type="text" name="username" />
 		<br>
-		<img src="http://www.capitolpride.org/images/symbol_triangle_black.png" height="10" width="10" id="toggle_button" class="clickable" />
-			<span class="clickable" >&nbsp;<span id="display_url">additional</span> password requirements</span>
-		<div id="toggleText" style="display: none">
+		<details>
+			<summary>  
+				<span id="display_url">additional</span> password requirements
+			</summary>
+		<div >
 			<table>
 				<tr>
 					<td>
@@ -56,8 +53,8 @@
 					</td>
 				<tr>
 					<td>
-					<input type="checkbox" name="lower" > 
-					<input type="number" name="lower_num" min="0" >
+					<input type="checkbox" name="lower" /> 
+					<input type="number" name="lower_num" min="0" />
 					Lowercase
 					</td>	
 				</tr>
@@ -70,6 +67,7 @@
 				</tr>
 			</table>
 		</div>
+		</details>
 		<input type="submit" value="Generate" />
 	</form>
   </body>

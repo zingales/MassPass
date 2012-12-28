@@ -37,9 +37,10 @@ var injectPassword = function (password, username) {
 					var flag = false; \
 					for (var i=0; i < inputs.length; i++) { \
 						if (inputs[i].type == 'password') {";
-	injection += "flag = true;inputs[i].value = '" + password + "';" + \
-  + "if(inputs[i-1].type== 'email') {
-      inputs[i-1].value='"+username+"';}inputs[i].focus();}}";
+	injection += "flag = true;inputs[i].value = '" + password + "'; \
+          if(inputs[i-1].type== 'email') { \
+          inputs[i-1].value='" +username+ "';} \
+          inputs[i].focus();}}";
 	injection += "if (!flag) { window.prompt ('Copy to clipboard: Ctrl+C, Enter', '" + password + "'); }";
 	window.close();
 	chrome.tabs.executeScript(null,{code:injection});
